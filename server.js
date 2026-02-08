@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import protect from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
@@ -20,8 +21,8 @@ app.get("/", (req, res) => {
   res.send("API running");
 });
 
-app.use("/api/products", productRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/products", protect, productRoutes);
+app.use("/api/auth", protect, authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
