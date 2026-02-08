@@ -1,6 +1,6 @@
-import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // REGISTER
 export const register = async (req, res) => {
@@ -9,7 +9,7 @@ export const register = async (req, res) => {
 
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res.status(400).json({ message: 'Email already used' });
+      return res.status(400).json({ message: "Email already used" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -20,7 +20,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.status(201).json({ message: 'Register success' });
+    res.status(201).json({ message: "Register success" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -33,19 +33,17 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1d' }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.json({
       token,

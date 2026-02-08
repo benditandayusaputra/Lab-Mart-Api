@@ -29,7 +29,7 @@ const productSchema = new mongoose.Schema(
       min: [0, "Stock cannot be negative"],
       default: 0,
     },
-    image: {
+    imageUrl: {
       type: String,
       default: "https://via.placeholder.com/300x300?text=No+Image",
     },
